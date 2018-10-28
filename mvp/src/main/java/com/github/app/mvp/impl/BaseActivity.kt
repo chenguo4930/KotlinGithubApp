@@ -1,7 +1,7 @@
 package com.github.app.mvp.impl
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import com.github.app.mvp.IMvpView
 import com.github.app.mvp.IPresenter
 import java.lang.reflect.ParameterizedType
@@ -12,8 +12,9 @@ import kotlin.reflect.full.isSubclassOf
 import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.jvm.jvmErasure
 
-abstract class BaseActivity<out P : BasePresenter<BaseActivity<P>>> : IMvpView<P>, Fragment() {
-    override val presenter: P
+abstract class BaseActivity<out P : BasePresenter<BaseActivity<P>>> : AppCompatActivity(), IMvpView<P> {
+
+    final override val presenter: P
 
     init {
         presenter = createPresenterKt()
@@ -66,6 +67,8 @@ abstract class BaseActivity<out P : BasePresenter<BaseActivity<P>>> : IMvpView<P
         presenter.onCreate(savedInstanceState)
     }
 
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {}
+
     override fun onStart() {
         super.onStart()
         presenter.onStart()
@@ -96,8 +99,9 @@ abstract class BaseActivity<out P : BasePresenter<BaseActivity<P>>> : IMvpView<P
         presenter.onSaveInstanceState(outState)
     }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        super.onRestoreInstanceState(savedInstanceState)
+        onViewStateRestored(savedInstanceState)
         presenter.onViewStateRestored(savedInstanceState)
     }
 }
