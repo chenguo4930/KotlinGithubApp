@@ -1,6 +1,7 @@
-package com.github.app.githubapp
+package com.github.app.githubapp.settings
 
 import com.github.app.common.sharepreferences.Preference
+import com.github.app.githubapp.AppContext
 
 
 object Settings {
